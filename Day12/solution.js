@@ -10,12 +10,18 @@ function countArrangements(row) {
   sequence = '.' + sequence + '.';
   let nums = pattern.split(",");
 
+  const memo = {}; // Memoization cache for dp function
+
   function dp(currentIndex, nextIndex, left) {
+    const memoKey = `${currentIndex}-${nextIndex}-${left}`;
+    if (memoKey in memo) {
+      return memo[memoKey];
+    }
+
     if (currentIndex === sequence.length) {
-      if (nextIndex === nums.length && left === 0) {
-        return 1;
-      }
-      return 0;
+      const res = (nextIndex === nums.length && left === 0) ? 1 : 0;
+      memo[memoKey] = res;
+      return res;
     }
 
     if (nextIndex > nums.length) {
@@ -45,10 +51,11 @@ function countArrangements(row) {
         res += dp(currentIndex + 1, nextIndex, left - 1);
       }
     }
+    memo[memoKey] = res;
     return res;
   }
 
-  return dp(0,0,0);
+  return dp(0, 0, 0);
 }
 
 for (const row of rows) {
@@ -57,12 +64,11 @@ for (const row of rows) {
 }
 console.log(totalArrangementsPart1);
 
-// @TODO why is this running forever on input?
 for (const row of rows) {
   let [sequence, pattern] = row.split(" ");
   sequence = sequence + '?' + sequence + '?' + sequence + '?' + sequence + '?' + sequence;
   pattern = pattern + ',' + pattern + ',' + pattern + ',' + pattern + ',' + pattern;
-  const unfolded = '.' + sequence + ' ' + pattern + '.';
+  const unfolded = sequence + ' ' + pattern;
   console.log(unfolded);
   const possibilitiesInRow = countArrangements(unfolded);
   totalArrangementsPart2 += possibilitiesInRow;
