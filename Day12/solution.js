@@ -2,12 +2,25 @@ const fs = require("fs");
 
 const input = fs.readFileSync("input.txt", "utf8").trim();
 const rows = input.split("\n");
-let totalArrangementsPart1 = 0;
-let totalArrangementsPart2 = 0;
+let sum = 0;
 
-function countArrangements(row) {
+function countArrangements(row, part) {
   let [sequence, pattern] = row.split(" ");
-  sequence = '.' + sequence + '.';
+  if (part === "part2") {
+    sequence =
+      sequence +
+      "?" +
+      sequence +
+      "?" +
+      sequence +
+      "?" +
+      sequence +
+      "?" +
+      sequence;
+    pattern =
+      pattern + "," + pattern + "," + pattern + "," + pattern + "," + pattern;
+  }
+  sequence = "." + sequence + ".";
   let nums = pattern.split(",");
 
   const memo = {}; // Memoization cache for dp function
@@ -19,7 +32,7 @@ function countArrangements(row) {
     }
 
     if (currentIndex === sequence.length) {
-      const res = (nextIndex === nums.length && left === 0) ? 1 : 0;
+      const res = nextIndex === nums.length && left === 0 ? 1 : 0;
       memo[memoKey] = res;
       return res;
     }
@@ -58,20 +71,11 @@ function countArrangements(row) {
   return dp(0, 0, 0);
 }
 
-for (const row of rows) {
-  const possibilitiesInRow = countArrangements(row);
-  totalArrangementsPart1 += possibilitiesInRow;
+for(const part of ['part1', 'part2']) {
+  sum = 0;
+  for (const row of rows) {
+    const possibilitiesInRow = countArrangements(row, part);
+    sum += possibilitiesInRow;
+  }
+console.log(part, ': ', sum);
 }
-console.log(totalArrangementsPart1);
-
-for (const row of rows) {
-  let [sequence, pattern] = row.split(" ");
-  sequence = sequence + '?' + sequence + '?' + sequence + '?' + sequence + '?' + sequence;
-  pattern = pattern + ',' + pattern + ',' + pattern + ',' + pattern + ',' + pattern;
-  const unfolded = sequence + ' ' + pattern;
-  console.log(unfolded);
-  const possibilitiesInRow = countArrangements(unfolded);
-  totalArrangementsPart2 += possibilitiesInRow;
-}
-
-console.log(totalArrangementsPart2);
