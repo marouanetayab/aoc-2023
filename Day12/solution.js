@@ -57,6 +57,7 @@ for (const row of rows) {
 }
 console.log(totalArrangementsPart1);
 
+// @TODO why is this running forever on input?
 for (const row of rows) {
   let [sequence, pattern] = row.split(" ");
   sequence = sequence + '?' + sequence + '?' + sequence + '?' + sequence + '?' + sequence;
