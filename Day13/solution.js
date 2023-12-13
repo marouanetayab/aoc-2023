@@ -45,11 +45,11 @@ function calculatePatternValue(pattern, nonMatching) {
 
 for (const part of ["part1", "part2"]) {
   sum = 0;
-  for (let i = 0; i < input.length; i++) {
+  for (let grid of input) {
     if (part === "part1") {
-      sum += calculatePatternValue(input[i], 0);
+      sum += calculatePatternValue(grid, 0);
     } else {
-      sum += calculatePatternValue(input[i], 2);
+      sum += calculatePatternValue(grid, 2);
     }
   }
   console.log(part, ': ', sum)
