@@ -11,10 +11,7 @@ function findReflectionIndex(pattern, nonMatching) {
   for (let i = 0; i < pattern.length - 1; i++) {
     let nonMatchingCount = 0;
     for (let j = 0; j < pattern.length; j++) {
-      if (
-        i + 1 + (i - j) >= 0 &&
-        i + 1 + (i - j) < pattern.length
-      ) {
+      if (i + 1 + (i - j) >= 0 && i + 1 + (i - j) < pattern.length) {
         for (let k = 0; k < pattern[i].length; k++) {
           if (pattern[j][k] !== pattern[i + 1 + (i - j)][k]) {
             nonMatchingCount++;
@@ -40,11 +37,12 @@ function calculatePatternValue(pattern, nonMatching) {
   if (column !== null) {
     return column;
   }
-  return null;
+  return 0;
 }
 
 for (const part of ["part1", "part2"]) {
   sum = 0;
+  const start = performance.now();
   for (let grid of input) {
     if (part === "part1") {
       sum += calculatePatternValue(grid, 0);
@@ -52,6 +50,6 @@ for (const part of ["part1", "part2"]) {
       sum += calculatePatternValue(grid, 2);
     }
   }
-  console.log(part, ': ', sum)
+  console.log(part, ": ", sum);
+  console.log(`Execution time ${part}: ${performance.now() - start} ms`);
 }
-
