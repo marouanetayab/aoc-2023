@@ -60,7 +60,7 @@ for(let part of ['part1', 'part2']) {
   if (part === 'part1') {
     sum = calculateLoad(rollRocks(grid));
   } else {
-    const cache = {};
+    const cache = new Map();
     const target = 1000000000;
     let currentIteration = 0;
     
@@ -68,13 +68,13 @@ for(let part of ['part1', 'part2']) {
       currentIteration++;
       spin360();
     
-      const hash = grid.map((row) => row.join(''));
-      if (cache[hash]) {
-        const cycleLength = currentIteration - cache[hash];
+      const hash = grid.map((row) => row.join('')).toString();
+      if (cache.has(hash)) {
+        const cycleLength = currentIteration - cache.get(hash);
         const repetitions = Math.floor((target - currentIteration) / cycleLength);
         currentIteration += repetitions * cycleLength;
       }
-      cache[hash] = currentIteration;
+      cache.set(hash, currentIteration);
     }
     sum = calculateLoad(grid);
   }
